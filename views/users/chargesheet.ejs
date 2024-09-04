@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Chargesheet</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>File a Chargesheet</h2>
+        
+        <form action="/file-chargesheet" method="POST" enctype="multipart/form-data">
+            <!-- Convict Information -->
+            <div class="form-group">
+                <label for="convict">Convict:</label>
+                <input type="text" id="convict" name="convict" class="form-control" placeholder="Enter convict's username" required>
+            </div>
+            
+            <!-- Charges -->
+            <div class="form-group">
+                <label for="charges">Charges:</label>
+                <textarea id="charges" name="charges" class="form-control" rows="3" required></textarea>
+                <small class="form-text text-muted">Describe the charges in detail.</small>
+            </div>
+            
+            <!-- Evidence -->
+            <div class="form-group">
+                <label for="evidenceDescription">Evidence Description:</label>
+                <input type="text" id="evidenceDescription" name="evidenceDescription" class="form-control" placeholder="Description of evidence">
+            </div>
+            <div class="form-group">
+                <label for="evidenceDocument">Upload Evidence Documents:</label>
+                <input type="file" id="evidenceDocument" name="evidence[]" class="form-control-file" multiple>
+                <small class="form-text text-muted">Upload relevant documents supporting the charges.</small>
+            </div>
+            
+            <!-- Witnesses -->
+            <div class="form-group">
+                <label for="witnessName">Witness Name:</label>
+                <input type="text" id="witnessName" name="witnessName" class="form-control" placeholder="Name of the witness">
+            </div>
+            <div class="form-group">
+                <label for="witnessPhone">Witness Phone:</label>
+                <input type="tel" id="witnessPhone" name="witnessPhone" class="form-control" placeholder="Witness contact phone">
+            </div>
+            <div class="form-group">
+                <label for="witnessEmail">Witness Email:</label>
+                <input type="email" id="witnessEmail" name="witnessEmail" class="form-control" placeholder="Witness contact email">
+            </div>
+            <div class="form-group">
+                <label for="witnessTestimony">Witness Testimony:</label>
+                <textarea id="witnessTestimony" name="witnessTestimony" class="form-control" rows="3" placeholder="Witness testimony"></textarea>
+            </div>
+
+            <!-- Prosecutor Information -->
+            <div class="form-group">
+                <label for="prosecutorName">Prosecutor Name:</label>
+                <input type="text" id="prosecutorName" name="prosecutorName" class="form-control" placeholder="Name of the prosecutor">
+            </div>
+            <div class="form-group">
+                <label for="prosecutorPhone">Prosecutor Phone:</label>
+                <input type="tel" id="prosecutorPhone" name="prosecutorPhone" class="form-control" placeholder="Prosecutor contact phone">
+            </div>
+            <div class="form-group">
+                <label for="prosecutorEmail">Prosecutor Email:</label>
+                <input type="email" id="prosecutorEmail" name="prosecutorEmail" class="form-control" placeholder="Prosecutor contact email">
+            </div>
+
+            <!-- Police Station -->
+            <div class="form-group">
+                <label for="policeStation">Police Station:</label>
+                <input type="text" id="policeStation" name="policeStation" class="form-control" required>
+                <small class="form-text text-muted">The police station where the chargesheet is filed.</small>
+            </div>
+
+            <!-- Status -->
+            <div class="form-group">
+                <label for="status">Status:</label>
+                <select id="status" name="status" class="form-control" required>
+                    <option value="Pending">Pending</option>
+                    <option value="Under Review">Under Review</option>
+                    <option value="Completed">Completed</option>
+                    <option value="Dismissed">Dismissed</option>
+                </select>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-primary">Submit Chargesheet</button>
+        </form>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

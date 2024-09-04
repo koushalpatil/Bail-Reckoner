@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lawyer Form</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            margin-top: 50px;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border: none;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 class="mb-4">Lawyer Details</h2>
+        <form id="lawyerForm" action="/submit-lawyer" method="POST">
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" class="form-control" id="name" name="name" required>
+                <div class="invalid-feedback">
+                    Name is required.
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="educationStatus">Education Status</label>
+                <input type="text" class="form-control" id="educationStatus" name="educationStatus" required>
+                <div class="invalid-feedback">
+                    Education status is required.
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="experience">Experience (years)</label>
+                <input type="number" class="form-control" id="experience" name="experience" required min="0">
+                <div class="invalid-feedback">
+                    Experience is required and must be a non-negative number.
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="specialty">Specialty</label>
+                <input type="text" class="form-control" id="specialty" name="specialty" required placeholder="Comma separated values">
+                <div class="invalid-feedback">
+                    Specialty is required.
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="age">Age</label>
+                <input type="number" class="form-control" id="age" name="age" required min="0" max="150">
+                <div class="invalid-feedback">
+                    Age is required and must be a valid number between 0 and 150.
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Phone</label>
+                <input type="text" class="form-control" id="phone" name="phone" required pattern="\d{10}" title="Phone number should be exactly 10 digits">
+                <div class="invalid-feedback">
+                    Please enter a valid phone number (10 digits).
+                </div>
+            </div>
+
+            
+
+            <div class="form-group">
+                <label for="address">Address</label>
+                <input type="text" class="form-control" id="address" name="address" required>
+                <div class="invalid-feedback">
+                    Address is required.
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="availabilityStatus">Availability Status</label>
+                <select class="form-control" id="availabilityStatus" name="availabilityStatus" required>
+                    <option value="">Select...</option>
+                    <option value="Available">Available</option>
+                    <option value="Unavailable">Unavailable</option>
+                </select>
+                <div class="invalid-feedback">
+                    Availability status is required.
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        // Bootstrap custom validation
+        (function () {
+            'use strict'
+            var form = document.getElementById('lawyerForm')
+            form.addEventListener('submit', function (event) {
+                if (!form.checkValidity()) {
+                    event.preventDefault()
+                    event.stopPropagation()
+                }
+                form.classList.add('was-validated')
+            }, false)
+        })()
+    </script>
+</body>
+</html>

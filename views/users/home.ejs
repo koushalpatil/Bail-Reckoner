@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Bail Reckoner</h1>
+    <%if(!isLogedIn){%>
+    <form action="/login">
+        <button>Login</button>
+    </form>
+    <br>
+    <form action="/signup">
+        <button>SignUp</button>
+    </form>
+   <%}else{%>
+    <form action="/logout" method="post">
+        <button>Logout</button>
+    </form>
+    <%if(role && role == 'Prosecutor'){%>
+        <a href="/chargesheet">File a Chargesheet</a>
+        <%}%>
+        <%if(role && role == 'Steagnographer'){%>
+            <a href="/case">File a Case</a>
+        <%}%>
+        
+    <%}%>
+    <form action="/allcases">
+        <button>View All Cases</button>
+    </form>
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Cases</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            max-width: 1200px;
+        }
+        h1 {
+            font-size: 2.5rem;
+            color: #343a40;
+            margin-bottom: 30px;
+        }
+        .table {
+            background-color: #ffffff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+        .table thead {
+            background-color: #343a40;
+            color: #ffffff;
+        }
+        .table th, .table td {
+            padding: 16px;
+            vertical-align: middle;
+        }
+        .btn-view {
+            background-color: #17a2b8;
+            color: #ffffff;
+            padding: 6px 12px;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+        .btn-view:hover {
+            background-color: #138496;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">All Cases</h1>
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover mt-4">
+                <thead>
+                    <tr>
+                        <th>Case Title</th>
+                        <th>Case Type</th>
+                        <th>Filing Date</th>
+                        <th>Status</th>
+                        <th>Court</th>
+                        <th>Judge</th>
+                        <th>Defendant</th>
+                        <th>Lawyers</th>
+                        <th>Nature of Offense</th>
+                        <th>Date of Arrest</th>
+                        <th>Conviction Status</th>
+                        <th>Investigation Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% cases.forEach(function(caseItem) { %>
+                        <tr>
+                            <td><%= caseItem.caseTitle %></td>
+                            <td><%= caseItem.caseType %></td>
+                            <td><%= caseItem.filingDate.toDateString() %></td>
+                            <td><%= caseItem.status %></td>
+                            <td>
+                                <strong>Name:</strong> <%= caseItem.court.courtName %><br>
+                                <strong>Address:</strong> <%= caseItem.court.courtAddress %>
+                            </td>
+                            <td><%= caseItem.judge.name %></td>
+                            <td><%= caseItem.defendant %></td>
+                            <td>
+                                <strong>Lawyer 1:</strong> <%= caseItem.lawyer1.map(lawyer => lawyer.name).join(', ') %><br>
+                                <strong>Lawyer 2:</strong> <%= caseItem.lawyer2.map(lawyer => lawyer.name).join(', ') %>
+                            </td>
+                            <td><%= caseItem.natureOfOffense %></td>
+                            <td><%= caseItem.dateOfArrest.toDateString() %></td>
+                            <td><%= caseItem.convictionStatus %></td>
+                            <td><%= caseItem.investigationStatus %></td>
+                            <td>
+                                <a href="/cases/<%= caseItem._id %>" class="btn-view">View</a>
+                            </td>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

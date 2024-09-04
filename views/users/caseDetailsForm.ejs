@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Case</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>Create Case</h2>
+        <form action="/cases" method="POST">
+            <!-- Case Title -->
+            <div class="form-group">
+                <label for="caseTitle">Case Title:</label>
+                <input type="text" id="caseTitle" name="caseTitle" class="form-control" placeholder="Enter case title" required>
+                <div class="invalid-feedback">Please provide a case title.</div>
+            </div>
+
+            <!-- Case Type -->
+            <div class="form-group">
+                <label for="caseType">Case Type:</label>
+                <select id="caseType" name="caseType" class="form-control" required>
+                    <option value="">Select case type</option>
+                    <option value="Criminal">Criminal</option>
+                    <option value="Civil">Civil</option>
+                    <option value="Family">Family</option>
+                    <option value="Labor">Labor</option>
+                    <option value="Commercial">Commercial</option>
+                </select>
+                <div class="invalid-feedback">Please select a case type.</div>
+            </div>
+
+            <!-- Appeals -->
+            <div class="form-group">
+                <label>Appeals:</label>
+                <div id="appealsContainer">
+                    <div class="appeal-form">
+                        <input type="date" name="appeals[0][appealDate]" class="form-control" placeholder="Appeal Date">
+                        <input type="text" name="appeals[0][appealCourt]" class="form-control mt-2" placeholder="Appeal Court">
+                        <input type="text" name="appeals[0][outcome]" class="form-control mt-2" placeholder="Outcome">
+                    </div>
+                </div>
+                <button type="button" class="btn btn-secondary mt-2" onclick="addAppeal()">Add Another Appeal</button>
+            </div>
+
+            <!-- Filing Date -->
+            <div class="form-group">
+                <label for="filingDate">Filing Date:</label>
+                <input type="date" id="filingDate" name="filingDate" class="form-control" required>
+                <div class="invalid-feedback">Please provide a filing date.</div>
+            </div>
+
+            <!-- Verdict -->
+            <div class="form-group">
+                <label for="verdict">Verdict:</label>
+                <input type="text" id="verdict" name="verdict" class="form-control" placeholder="Verdict">
+            </div>
+
+            <!-- Court Information -->
+            <div class="form-group">
+                <label for="courtName">Court Name:</label>
+                <input type="text" id="courtName" name="court[courtName]" class="form-control" placeholder="Enter court name" required>
+                <div class="invalid-feedback">Please provide a court name.</div>
+            </div>
+            <div class="form-group">
+                <label for="courtAddress">Court Address:</label>
+                <input type="text" id="courtAddress" name="court[courtAddress]" class="form-control" placeholder="Enter court address">
+            </div>
+
+            <!-- Status -->
+            <div class="form-group">
+                <label for="status">Status:</label>
+                <select id="status" name="status" class="form-control" required>
+                    <option value="">Select status</option>
+                    <option value="Ongoing">Ongoing</option>
+                    <option value="Closed">Closed</option>
+                </select>
+                <div class="invalid-feedback">Please select a status.</div>
+            </div>
+
+            <!-- Court Dates -->
+            <div class="form-group">
+                <label>Court Dates:</label>
+                <div id="courtDatesContainer">
+                    <input type="date" name="courtDates[0]" class="form-control mt-2">
+                </div>
+                <button type="button" class="btn btn-secondary mt-2" onclick="addCourtDate()">Add Another Court Date</button>
+            </div>
+
+            <!-- Judge -->
+            <div class="form-group">
+                <label for="judge">Judge:</label>
+                <input type="text" id="judge" name="judge" class="form-control" placeholder="Judge ID" required>
+                <small class="form-text text-muted">Judge should be registered on our website.</small>
+                <div class="invalid-feedback">Please provide a judge ID.</div>
+            </div>
+
+            <!-- Accused -->
+            <div class="form-group">
+                <label for="accussed">Username of Accused:</label>
+                <input type="text" id="accussed" name="accussed" class="form-control" placeholder="Accused ID" required>
+                <small class="form-text text-muted">Accused should be registered on our website.</small>
+                <div class="invalid-feedback">Please provide an accused ID.</div>
+            </div>
+
+            <!-- Defendant -->
+            <div class="form-group">
+                <label for="defendant">Defendant:</label>
+                <input type="text" id="defendant" name="defendant" class="form-control" placeholder="Defendant ID">
+                <small class="form-text text-muted">Defendant should be registered on our website.</small>
+                <div class="invalid-feedback">Please provide a defendant ID.</div>
+            </div>
+
+            <!-- Lawyer 1 -->
+            <div class="form-group">
+                <label for="lawyer1">Username of Lawyer 1:</label>
+                <input type="text" id="lawyer1" name="lawyer1[]" class="form-control" placeholder="Lawyer 1 ID" required>
+                <small class="form-text text-muted">Lawyer should be registered on our website.</small>
+                <div class="invalid-feedback">Please provide Lawyer 1 ID.</div>
+            </div>
+
+            <!-- Lawyer 2 -->
+            <div class="form-group">
+                <label for="lawyer2">Username of Lawyer 2:</label>
+                <input type="text" id="lawyer2" name="lawyer2[]" class="form-control" placeholder="Lawyer 2 ID" required>
+                <small class="form-text text-muted">Lawyer should be registered on our website.</small>
+                <div class="invalid-feedback">Please provide Lawyer 2 ID.</div>
+            </div>
+
+            <!-- Judgement Passed -->
+            <div class="form-group">
+                <label>Judgement Passed:</label>
+                <div id="judgementsContainer">
+                    <div class="judgement-form">
+                        <input type="date" name="judgementDate" class="form-control" placeholder="Judgement Date" required>
+                        <input type="text" name="judgementJudge" class="form-control mt-2" placeholder="Judge ID" required>
+                        <textarea name="judgementTold" class="form-control mt-2" placeholder="Judgement" required></textarea>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-secondary mt-2" onclick="addJudgement()">Add Another Judgement</button>
+            </div>
+
+            <!-- Case Proceedings -->
+            <div class="form-group">
+                <label>Case Proceedings:</label>
+                <div class="form-group">
+                    <label for="evidencePresented">Evidence Presented:</label>
+                    <input type="text" id="evidencePresented" name="caseProceedings[evidencePresented][]" class="form-control" placeholder="Evidence Description">
+                </div>
+                <div class="form-group">
+                    <label for="witnessesTestified">Witnesses Testified:</label>
+                    <div id="witnessesContainer">
+                        <div class="witness-form">
+                            <input type="text" name="caseProceedings[witnessesTestified][0][name]" class="form-control" placeholder="Witness Name" required>
+                            <input type="text" name="caseProceedings[witnessesTestified][0][contact]" class="form-control mt-2" placeholder="Witness Contact" required>
+                            <input type="text" name="caseProceedings[witnessesTestified][0][address]" class="form-control mt-2" placeholder="Witness Address" required>
+                            <textarea name="caseProceedings[witnessesTestified][0][testimony][]" class="form-control mt-2" placeholder="Witness Testimony"></textarea>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-secondary mt-2" onclick="addWitness()">Add Another Witness</button>
+                </div>
+                <div class="form-group">
+                    <label for="witnessHashes">Witness Hashes:</label>
+                    <input type="text" id="witnessHashes" name="caseProceedings[witnessHashes][]" class="form-control" placeholder="Witness Hash">
+                </div>
+            </div>
+
+            <!-- Signed -->
+            <div class="form-group">
+                <label for="signed">Signed:</label>
+                <input type="checkbox" id="signed" name="signed">
+            </div>
+
+            <!-- Stenographer -->
+            <div class="form-group">
+                <label for="stenographer">Stenographer:</label>
+                <input type="text" id="stenographer" name="stenographer" class="form-control" placeholder="Stenographer ID" required>
+                <div class="invalid-feedback">Please provide a stenographer ID.</div>
+            </div>
+
+            <!-- Nature of Offense -->
+            <div class="form-group">
+                <label for="natureOfOffense">Nature of Offense:</label>
+                <input type="text" id="natureOfOffense" name="natureOfOffense" class="form-control" placeholder="Nature of Offense" required>
+                <div class="invalid-feedback">Please provide the nature of offense.</div>
+            </div>
+
+            <!-- Charges Pressed -->
+            <div class="form-group">
+                <label>Charges Pressed:</label>
+                <div id="chargesPressedContainer">
+                    <input type="text" name="chargesPressed[0]" class="form-control mt-2" placeholder="Charge Description" required>
+                </div>
+                <button type="button" class="btn btn-secondary mt-2" onclick="addCharge()">Add Another Charge</button>
+            </div>
+
+            <!-- Date of Arrest -->
+            <div class="form-group">
+                <label for="dateOfArrest">Date of Arrest:</label>
+                <input type="date" id="dateOfArrest" name="dateOfArrest" class="form-control" required>
+                <div class="invalid-feedback">Please provide the date of arrest.</div>
+            </div>
+
+            <!-- Investigation Status -->
+            <div class="form-group">
+                <label for="investigationStatus">Investigation Status:</label>
+                <select id="investigationStatus" name="investigationStatus" class="form-control" required>
+                    <option value="">Select status</option>
+                    <option value="Ongoing">Ongoing</option>
+                    <option value="Completed">Completed</option>
+                </select>
+                <div class="invalid-feedback">Please select the investigation status.</div>
+            </div>
+
+            <!-- Sentence Served -->
+            <div class="form-group">
+                <label for="sentenceServed">Sentence Served:</label>
+                <input type="text" id="sentenceServed" name="sentenceServed" class="form-control" placeholder="Sentence Served">
+            </div>
+
+            <!-- Conviction Status -->
+            <div class="form-group">
+                <label for="convictionStatus">Conviction Status:</label>
+                <select id="convictionStatus" name="convictionStatus" class="form-control" required>
+                    <option value="">Select status</option>
+                    <option value="Arrested">Arrested</option>
+                    <option value="UnderTrial">Under Trial</option>
+                    <option value="Convicted">Convicted</option>
+                    <option value="Acquitted">Acquitted</option>
+                </select>
+                <div class="invalid-feedback">Please select the conviction status.</div>
+            </div>
+
+            <!-- Documents -->
+            <!-- <div class="form-group">
+                <label>Documents:</label>
+                <div id="documentsContainer">
+                    <input type="text" name="documents[0]" class="form-control mt-2" placeholder="Document ID">
+                </div>
+                <button type="button" class="btn btn-secondary mt-2" onclick="addDocument()">Add Another Document</button>
+            </div> -->
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+
+    <script>
+        function addAppeal() {
+            const container = document.getElementById('appealsContainer');
+            const index = container.children.length;
+            const appealForm = `
+                <div class="appeal-form">
+                    <input type="date" name="appeals[${index}][appealDate]" class="form-control mt-2" placeholder="Appeal Date">
+                    <input type="text" name="appeals[${index}][appealCourt]" class="form-control mt-2" placeholder="Appeal Court">
+                    <input type="text" name="appeals[${index}][outcome]" class="form-control mt-2" placeholder="Outcome">
+                </div>
+            `;
+            container.insertAdjacentHTML('beforeend', appealForm);
+        }
+
+        function addCourtDate() {
+            const container = document.getElementById('courtDatesContainer');
+            const index = container.children.length;
+            const courtDateInput = `
+                <input type="date" name="courtDates[${index}]" class="form-control mt-2">
+            `;
+            container.insertAdjacentHTML('beforeend', courtDateInput);
+        }
+
+        function addJudgement() {
+            const container = document.getElementById('judgementsContainer');
+            const index = container.children.length;
+            const judgementForm = `
+                <div class="judgement-form">
+                    <input type="date" name="judgementPassed[${index}][date]" class="form-control mt-2" placeholder="Judgement Date" required>
+                    <input type="text" name="judgementPassed[${index}][judge]" class="form-control mt-2" placeholder="Judge ID" required>
+                    <textarea name="judgementPassed[${index}][judgement]" class="form-control mt-2" placeholder="Judgement" required></textarea>
+                </div>
+            `;
+            container.insertAdjacentHTML('beforeend', judgementForm);
+        }
+
+        function addWitness() {
+            const container = document.getElementById('witnessesContainer');
+            const index = container.children.length;
+            const witnessForm = `
+                <div class="witness-form">
+                    <input type="text" name="caseProceedings[witnessesTestified][${index}][name]" class="form-control mt-2" placeholder="Witness Name" required>
+                    <input type="text" name="caseProceedings[witnessesTestified][${index}][contact]" class="form-control mt-2" placeholder="Witness Contact" required>
+                    <input type="text" name="caseProceedings[witnessesTestified][${index}][address]" class="form-control mt-2" placeholder="Witness Address" required>
+                    <textarea name="caseProceedings[witnessesTestified][${index}][testimony][]" class="form-control mt-2" placeholder="Witness Testimony"></textarea>
+                </div>
+            `;
+            container.insertAdjacentHTML('beforeend', witnessForm);
+        }
+
+        function addCharge() {
+            const container = document.getElementById('chargesPressedContainer');
+            const index = container.children.length;
+            const chargeInput = `
+                <input type="text" name="chargesPressed[${index}]" class="form-control mt-2" placeholder="Charge Description" required>
+            `;
+            container.insertAdjacentHTML('beforeend', chargeInput);
+        }
+
+        function addDocument() {
+            const container = document.getElementById('documentsContainer');
+            const index = container.children.length;
+            const documentInput = `
+                <input type="text" name="documents[${index}]" class="form-control mt-2" placeholder="Document ID">
+            `;
+            container.insertAdjacentHTML('beforeend', documentInput);
+        }
+    </script>
+</body>
+</html>
