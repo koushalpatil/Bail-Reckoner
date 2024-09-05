@@ -6,6 +6,10 @@
     <title>Prosecutor Profile Dashboard</title>
     <link rel="stylesheet" href="/path/to/your/styles.css">
     <style>
+        /* Importing Google Font */
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap');
+
+        /* General Styles */
         body {
             font-family: 'Nunito', sans-serif;
             background-color: #f0f4f8;
@@ -20,9 +24,10 @@
             height: 100vh;
         }
 
+        /* Sidebar Styles */
         .sidebar {
             width: 250px;
-            background-color: #007bff;
+            background-color: #00162e;
             box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
             padding: 20px;
             transition: all 0.3s ease;
@@ -63,6 +68,7 @@
             color: #ffd700;
         }
 
+        /* Dashboard Styles */
         .dashboard {
             flex-grow: 1;
             padding: 40px;
@@ -71,6 +77,9 @@
         }
 
         .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 30px;
             animation: fadeIn 1s ease;
         }
@@ -82,19 +91,23 @@
             margin: 0;
         }
 
+        /* Card Styles */
         .card-container {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 20px;
+            margin-bottom: 30px;
+            animation: fadeInUp 0.7s ease forwards;
         }
 
         .card {
             background-color: #fff;
             padding: 30px;
             border-radius: 12px;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
             text-align: center;
             transition: transform 0.3s, box-shadow 0.3s ease;
+            border: 2px solid #000;
         }
 
         .card:hover {
@@ -113,23 +126,71 @@
             font-size: 1.8em;
             color: #007bff;
             font-weight: 700;
+            word-wrap: break-word; /* Ensures long words or email addresses wrap onto the next line */
+            overflow: hidden;      /* Prevents content from overflowing the card */
+            text-overflow: ellipsis; /* Adds "..." for overflowing text */
+            white-space: nowrap;   /* Prevents the text from breaking to the next line */
         }
 
-        /* Chargesheet Button */
+
+        /* Case List Styles */
+        .case-item {
+            padding: 20px;
+            margin-bottom: 15px;
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+            transition: box-shadow 0.3s, transform 0.3s;
+        }
+
+        .case-item:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transform: translateY(-5px);
+        }
+
+        .case-item p {
+            margin: 10px 0;
+            font-size: 1.1em;
+        }
+
+        .case-item a {
+            text-decoration: none;
+            color: #007bff;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        .case-item a:hover {
+            color: #ffd700;
+            text-decoration: underline;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Create Chargesheet Button Styles */
         .create-chargesheet-button {
-            background-color: #fff;
+            text-align: center;
+            background-color: #d0e8f2;
             padding: 30px;
             border-radius: 12px;
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            transition: transform 0.3s, box-shadow 0.3s ease;
-            animation: fadeInUp 0.7s ease forwards;
-            margin-top: 30px;
-        }
-
-        .create-chargesheet-button:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 16px 32px rgba(0, 0, 0, 0.2);
+            margin-bottom: 30px;
+            border: 2px solid #000;
         }
 
         .create-chargesheet-button h3 {
@@ -152,23 +213,6 @@
         .create-chargesheet-button a:hover {
             background-color: #0056b3;
         }
-
-        /* Animations */
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
     </style>
 </head>
 <body>
@@ -187,25 +231,12 @@
 
         <!-- Main Dashboard -->
         <div class="dashboard">
-            <!-- Prosecutor Information -->
             <div class="dashboard-header">
                 <h1><%= prosecutor.name %>'s Dashboard</h1>
             </div>
-            
-            <!-- Cards Display -->
+
+            <!-- Overview Cards -->
             <div class="card-container">
-                <div class="card">
-                    <h3>Username</h3>
-                    <p><%= prosecutor.username %></p>
-                </div>
-                <div class="card">
-                    <h3>Role</h3>
-                    <p><%= prosecutor.role %></p>
-                </div>
-                <div class="card">
-                    <h3>Email</h3>
-                    <p><%= prosecutor.contactDetails.email %></p>
-                </div>
                 <div class="card">
                     <h3>Contact</h3>
                     <p><%= prosecutor.contactDetails.phone %></p>
@@ -219,8 +250,8 @@
                     <p><%= prosecutor.policeId %></p>
                 </div>
             </div>
-            
-            <!-- Button for Filing New Chargesheet -->
+
+            <!-- Create Chargesheet Button -->
             <div class="create-chargesheet-button">
                 <h3>File a Chargesheet</h3>
                 <a href="/chargesheet">File New Chargesheet</a>
