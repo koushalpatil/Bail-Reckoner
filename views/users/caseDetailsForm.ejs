@@ -4,14 +4,38 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Case</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            margin-top: 50px;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border: none;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+        .btn-secondary {
+            background-color: #6c757d;
+            border: none;
+        }
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+    </style>
 </head>
 <body>
-    <div class="container mt-5">
-        <h2>Create Case</h2>
+    <div class="container">
+        <h2 class="mb-4">Create Case</h2>
         <form action="/cases" method="POST">
             <!-- Case Title -->
             <div class="form-group">
@@ -157,30 +181,25 @@
                         <div class="witness-form">
                             <input type="text" name="caseProceedings[witnessesTestified][0][name]" class="form-control" placeholder="Witness Name" required>
                             <input type="text" name="caseProceedings[witnessesTestified][0][contact]" class="form-control mt-2" placeholder="Witness Contact" required>
-                            <input type="text" name="caseProceedings[witnessesTestified][0][address]" class="form-control mt-2" placeholder="Witness Address" required>
-                            <textarea name="caseProceedings[witnessesTestified][0][testimony][]" class="form-control mt-2" placeholder="Witness Testimony"></textarea>
+                            <textarea name="caseProceedings[witnessesTestified][0][testimony]" class="form-control mt-2" placeholder="Witness Testimony" required></textarea>
                         </div>
                     </div>
                     <button type="button" class="btn btn-secondary mt-2" onclick="addWitness()">Add Another Witness</button>
                 </div>
-                <div class="form-group">
-                    <label for="witnessHashes">Witness Hashes:</label>
-                    <input type="text" id="witnessHashes" name="caseProceedings[witnessHashes][]" class="form-control" placeholder="Witness Hash">
-                </div>
             </div>
 
-            <!-- Signed -->
-            <div class="form-group">
+             <!-- Signed -->
+             <div class="form-group">
                 <label for="signed">Signed:</label>
                 <input type="checkbox" id="signed" name="signed">
             </div>
 
             <!-- Stenographer -->
-            <div class="form-group">
+            <!-- <div class="form-group">
                 <label for="stenographer">Stenographer:</label>
                 <input type="text" id="stenographer" name="stenographer" class="form-control" placeholder="Stenographer ID" required>
                 <div class="invalid-feedback">Please provide a stenographer ID.</div>
-            </div>
+            </div> -->
 
             <!-- Nature of Offense -->
             <div class="form-group">
@@ -235,85 +254,65 @@
                 <div class="invalid-feedback">Please select the conviction status.</div>
             </div>
 
-            <!-- Documents -->
-            <!-- <div class="form-group">
-                <label>Documents:</label>
-                <div id="documentsContainer">
-                    <input type="text" name="documents[0]" class="form-control mt-2" placeholder="Document ID">
-                </div>
-                <button type="button" class="btn btn-secondary mt-2" onclick="addDocument()">Add Another Document</button>
-            </div> -->
 
-            <button type="submit" class="btn btn-primary">Submit</button>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-primary">Create Case</button>
         </form>
     </div>
 
     <script>
+        let appealCount = 1;
         function addAppeal() {
             const container = document.getElementById('appealsContainer');
-            const index = container.children.length;
-            const appealForm = `
-                <div class="appeal-form">
-                    <input type="date" name="appeals[${index}][appealDate]" class="form-control mt-2" placeholder="Appeal Date">
-                    <input type="text" name="appeals[${index}][appealCourt]" class="form-control mt-2" placeholder="Appeal Court">
-                    <input type="text" name="appeals[${index}][outcome]" class="form-control mt-2" placeholder="Outcome">
-                </div>
+            const newAppeal = document.createElement('div');
+            newAppeal.className = 'appeal-form mt-2';
+            newAppeal.innerHTML = `
+                <input type="date" name="appeals[${appealCount}][appealDate]" class="form-control" placeholder="Appeal Date">
+                <input type="text" name="appeals[${appealCount}][appealCourt]" class="form-control mt-2" placeholder="Appeal Court">
+                <input type="text" name="appeals[${appealCount}][outcome]" class="form-control mt-2" placeholder="Outcome">
             `;
-            container.insertAdjacentHTML('beforeend', appealForm);
+            container.appendChild(newAppeal);
+            appealCount++;
         }
 
+        let courtDateCount = 1;
         function addCourtDate() {
             const container = document.getElementById('courtDatesContainer');
-            const index = container.children.length;
-            const courtDateInput = `
-                <input type="date" name="courtDates[${index}]" class="form-control mt-2">
-            `;
-            container.insertAdjacentHTML('beforeend', courtDateInput);
+            const newCourtDate = document.createElement('input');
+            newCourtDate.type = 'date';
+            newCourtDate.name = `courtDates[${courtDateCount}]`;
+            newCourtDate.className = 'form-control mt-2';
+            container.appendChild(newCourtDate);
+            courtDateCount++;
         }
 
+        let judgementCount = 1;
         function addJudgement() {
             const container = document.getElementById('judgementsContainer');
-            const index = container.children.length;
-            const judgementForm = `
-                <div class="judgement-form">
-                    <input type="date" name="judgementPassed[${index}][date]" class="form-control mt-2" placeholder="Judgement Date" required>
-                    <input type="text" name="judgementPassed[${index}][judge]" class="form-control mt-2" placeholder="Judge ID" required>
-                    <textarea name="judgementPassed[${index}][judgement]" class="form-control mt-2" placeholder="Judgement" required></textarea>
-                </div>
+            const newJudgement = document.createElement('div');
+            newJudgement.className = 'judgement-form mt-2';
+            newJudgement.innerHTML = `
+                <input type="date" name="judgementPassed[${judgementCount}][date]" class="form-control" placeholder="Judgement Date" required>
+                <input type="text" name="judgementPassed[${judgementCount}][judge]" class="form-control mt-2" placeholder="Judge ID" required>
+                <textarea name="judgementPassed[${judgementCount}][judgement]" class="form-control mt-2" placeholder="Judgement" required></textarea>
             `;
-            container.insertAdjacentHTML('beforeend', judgementForm);
+            container.appendChild(newJudgement);
+            judgementCount++;
         }
 
+        let witnessCount = 1;
         function addWitness() {
             const container = document.getElementById('witnessesContainer');
-            const index = container.children.length;
-            const witnessForm = `
-                <div class="witness-form">
-                    <input type="text" name="caseProceedings[witnessesTestified][${index}][name]" class="form-control mt-2" placeholder="Witness Name" required>
-                    <input type="text" name="caseProceedings[witnessesTestified][${index}][contact]" class="form-control mt-2" placeholder="Witness Contact" required>
-                    <input type="text" name="caseProceedings[witnessesTestified][${index}][address]" class="form-control mt-2" placeholder="Witness Address" required>
-                    <textarea name="caseProceedings[witnessesTestified][${index}][testimony][]" class="form-control mt-2" placeholder="Witness Testimony"></textarea>
-                </div>
+            const newWitness = document.createElement('div');
+            newWitness.className = 'witness-form mt-2';
+            newWitness.innerHTML = `
+                <input type="text" name="caseProceedings[witnessesTestified][${witnessCount}][name]" class="form-control" placeholder="Witness Name" required>
+                <input type="text" name="caseProceedings[witnessesTestified][${witnessCount}][contact]" class="form-control mt-2" placeholder="Witness Contact" required>
+                <textarea name="caseProceedings[witnessesTestified][${witnessCount}][testimony]" class="form-control mt-2" placeholder="Witness Testimony" required></textarea>
             `;
-            container.insertAdjacentHTML('beforeend', witnessForm);
-        }
-
-        function addCharge() {
-            const container = document.getElementById('chargesPressedContainer');
-            const index = container.children.length;
-            const chargeInput = `
-                <input type="text" name="chargesPressed[${index}]" class="form-control mt-2" placeholder="Charge Description" required>
-            `;
-            container.insertAdjacentHTML('beforeend', chargeInput);
-        }
-
-        function addDocument() {
-            const container = document.getElementById('documentsContainer');
-            const index = container.children.length;
-            const documentInput = `
-                <input type="text" name="documents[${index}]" class="form-control mt-2" placeholder="Document ID">
-            `;
-            container.insertAdjacentHTML('beforeend', documentInput);
+            container.appendChild(newWitness);
+            witnessCount++;
         }
     </script>
 </body>

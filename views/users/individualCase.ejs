@@ -5,6 +5,145 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= case1.caseTitle %> - Case Details</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(to right, #d4e1f1, #a8c0e8);
+            animation: backgroundChange 8s ease-in-out infinite;
+        }
+
+        @keyframes backgroundChange {
+            0% { background: linear-gradient(to right, #d4e1f1, #a8c0e8); }
+            25% { background: linear-gradient(to right, #a8c0e8, #d4e1f1); }
+            50% { background: linear-gradient(to right, #d4e1f1, #a8c0e8); }
+            75% { background: linear-gradient(to right, #a8c0e8, #d4e1f1); }
+            100% { background: linear-gradient(to right, #d4e1f1, #a8c0e8); }
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.85);
+            border-radius: 12px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .container::before {
+            content: "";
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            border: 2px solid #333;
+            border-radius: 12px;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        h1 {
+            font-size: 2rem;
+            color: #333;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            font-weight: 700;
+            border: 2px solid #333;
+            border-radius: 8px;
+            padding: 0.5rem 1rem;
+            background: rgba(255, 255, 255, 0.7);
+        }
+
+        .card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+            background: rgba(255, 255, 255, 0.85);
+        }
+
+        .card-header {
+            background: linear-gradient(45deg, #d4e1f1, #a8c0e8);
+            color: #333;
+            font-size: 1.5rem;
+            border-bottom: 2px solid #ddd;
+            padding: 1rem;
+            font-weight: 700;
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        .section {
+            margin-bottom: 2rem;
+            padding: 1rem;
+            border-radius: 8px;
+        }
+
+        .section-lawyers {
+            background-color: #e9f5f9;
+            border: 1px solid #b0d4e3;
+        }
+
+        .section-appeals {
+            background-color: #f9f5e9;
+            border: 1px solid #d4c2b0;
+        }
+
+        .section-proceedings {
+            background-color: #f9e9f5;
+            border: 1px solid #d4b0c2;
+        }
+
+        .card-body p {
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #d4e1f1, #a8c0e8);
+            border: 2px solid #333;
+            color: #333;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background 0.3s ease-in-out, color 0.3s ease-in-out;
+            font-size: 1rem;
+            padding: 10px 20px;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(45deg, #a8c0e8, #d4e1f1);
+            color: white;
+        }
+
+        h4 {
+            margin-top: 2rem;
+            font-size: 1.25rem;
+            color: #333;
+            border-bottom: 2px solid #ddd;
+            padding-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        ul {
+            padding-left: 1.5rem;
+        }
+
+        ul li {
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        strong {
+            color: #333;
+            font-weight: 700;
+        }
+    </style>
 </head>
 <body>
     <div class="container mt-5">
@@ -23,53 +162,63 @@
                 <p><strong>Court:</strong> <%= case1.court.courtName %>, <%= case1.court.courtAddress %></p>
                 <p><strong>Judge:</strong> <%= case1.judge.name %></p>
                 <p><strong>Defendant:</strong> <%= case1.defendant %></p>
-                <p><strong>Lawyers:</strong> 
-                    Lawyer 1: <%= case1.lawyer1.map(lawyer => lawyer.name).join(', ') %><br>
-                    Lawyer 2: <%= case1.lawyer2.map(lawyer => lawyer.name).join(', ') %>
-                </p>
+
+                <!-- Lawyers Section -->
+                <div class="section section-lawyers">
+                    <h4>Lawyers</h4>
+                    <p><strong>Lawyer 1:</strong> <%= case1.lawyer1.map(lawyer => lawyer.name).join(', ') %></p>
+                    <p><strong>Lawyer 2:</strong> <%= case1.lawyer2.map(lawyer => lawyer.name).join(', ') %></p>
+                </div>
+
+                <!-- Appeals Section -->
+                <div class="section section-appeals">
+                    <h4>Appeals</h4>
+                    <% if (case1.appeals.length > 0) { %>
+                        <ul>
+                            <% case1.appeals.forEach(function(appeal) { %>
+                                <li>
+                                    <strong>Appeal Date:</strong> <%= appeal.appealDate ? appeal.appealDate.toDateString() : 'N/A' %><br>
+                                    <strong>Court:</strong> <%= appeal.appealCourt %><br>
+                                    <strong>Outcome:</strong> <%= appeal.outcome %>
+                                </li>
+                            <% }); %>
+                        </ul>
+                    <% } else { %>
+                        <p>No appeals available.</p>
+                    <% } %>
+                </div>
+
+                <!-- Case Proceedings Section -->
+                <div class="section section-proceedings">
+                    <h4>Case Proceedings</h4>
+                    <p><strong>Evidence Presented:</strong> <%= case1.caseProceedings.evidencePresented.join(', ') %></p>
+                    <p><strong>Witnesses Testified:</strong></p>
+                    <% if (case1.caseProceedings.witnessesTestified.length > 0) { %>
+                        <ul>
+                            <% case1.caseProceedings.witnessesTestified.forEach(function(witness) { %>
+                                <li>
+                                    <strong>Name:</strong> <%= witness.name %><br>
+                                    <strong>Contact:</strong> <%= witness.contact %><br>
+                                    <strong>Address:</strong> <%= witness.address %><br>
+                                    <strong>Testimony:</strong> <%= witness.testimony.join(', ') %>
+                                </li>
+                            <% }); %>
+                        </ul>
+                    <% } else { %>
+                        <p>No witnesses have testified.</p>
+                    <% } %>
+                </div>
+
+                <!-- Additional Details -->
                 <p><strong>Date of Arrest:</strong> <%= case1.dateOfArrest.toDateString() %></p>
                 <p><strong>Verdict:</strong> <%= case1.verdict %></p>
                 <p><strong>Accused:</strong> <%= case1.accussed.name %></p>
                 <p><strong>Stenographer:</strong> <%= case1.stenographer.name %></p>
                 <p><strong>Signed:</strong> <%= case1.signed %></p>
-                
-                <!-- Appeals Section -->
-                <h4>Appeals</h4>
-                <% if(case1.appeals.length > 0) { %>
-                    <ul>
-                        <% case1.appeals.forEach(function(appeal) { %>
-                            <li>
-                                <strong>Appeal Date:</strong> <%= appeal.appealDate ? appeal.appealDate.toDateString() : 'N/A' %><br>
-                                <strong>Court:</strong> <%= appeal.appealCourt %><br>
-                                <strong>Outcome:</strong> <%= appeal.outcome %>
-                            </li>
-                        <% }); %>
-                    </ul>
-                <% } else { %>
-                    <p>No appeals available.</p>
-                <% } %>
-
-                <!-- Case Proceedings Section -->
-                <h4>Case Proceedings</h4>
-                <p><strong>Evidence Presented:</strong> <%= case1.caseProceedings.evidencePresented.join(', ') %></p>
-                <p><strong>Witnesses Testified:</strong></p>
-                <% if(case1.caseProceedings.witnessesTestified.length > 0) { %>
-                    <ul>
-                        <% case1.caseProceedings.witnessesTestified.forEach(function(witness) { %>
-                            <li>
-                                <strong>Name:</strong> <%= witness.name %><br>
-                                <strong>Contact:</strong> <%= witness.contact %><br>
-                                <strong>Address:</strong> <%= witness.address %><br>
-                                <strong>Testimony:</strong> <%= witness.testimony.join(', ') %>
-                            </li>
-                        <% }); %>
-                    </ul>
-                <% } else { %>
-                    <p>No witnesses have testified.</p>
-                <% } %>
             </div>
         </div>
-        <a href="/allcases" class="btn btn-primary mt-4">Back to All Cases</a>
+        <a href="javascript:history.back()" class="btn btn-primary mt-4">Back to All Cases</a>
+
     </div>
 </body>
 </html>

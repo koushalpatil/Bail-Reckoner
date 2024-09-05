@@ -3,13 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lawyer Profile Dashboard</title>
+    <title>Stenographer Profile Dashboard</title>
     <link rel="stylesheet" href="/path/to/your/styles.css">
     <style>
-        /* Importing Google Font */
-        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap');
-
-        /* General Styles */
         body {
             font-family: 'Nunito', sans-serif;
             background-color: #f0f4f8;
@@ -24,10 +20,9 @@
             height: 100vh;
         }
 
-        /* Sidebar Styles */
         .sidebar {
             width: 250px;
-            background-color: #022c58;
+            background-color: #001429;
             box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
             padding: 20px;
             transition: all 0.3s ease;
@@ -68,7 +63,6 @@
             color: #ffd700;
         }
 
-        /* Dashboard Styles */
         .dashboard {
             flex-grow: 1;
             padding: 40px;
@@ -91,7 +85,6 @@
             margin: 0;
         }
 
-        /* Card Styles */
         .card-container {
             display: flex;
             gap: 30px;
@@ -127,16 +120,16 @@
             font-weight: 700;
         }
 
-        /* Case List Styles */
-        .case-list {
+        .case-list, .create-case-button, .digital-signature {
             background-color: #fff;
             padding: 30px;
             border-radius: 12px;
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
             animation: fadeInUp 0.7s ease forwards;
+            margin-bottom: 30px;
         }
 
-        .case-list h3 {
+        .case-list h3, .create-case-button h3, .digital-signature h3 {
             font-size: 2em;
             font-weight: 700;
             margin-bottom: 20px;
@@ -174,6 +167,30 @@
             text-decoration: underline;
         }
 
+        .create-case-button {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            animation: fadeInUp 0.7s ease forwards;
+            margin-bottom: 30px;
+            text-align: start; /* Align text to the start */
+        }
+
+        .create-case-button a {
+            padding: 10px 20px;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: #fff;
+            font-size: 1.2em;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+        .create-case-button a:hover {
+            background-color: #0056b3;
+        }
+
         /* Animations */
         @keyframes fadeIn {
             from { opacity: 0; }
@@ -196,12 +213,12 @@
     <div class="container">
         <!-- Sidebar -->
         <div class="sidebar">
-            <h2 style="text-align: start;">Lawyer Dashboard</h2>
+            <h2 style="text-align: start;">Stenographer Dashboard</h2>
             <ul>
-                
                 <li><a href="#">Profile</a></li>
                 <li><a href="#">Cases</a></li>
-                <li><a href="#">Requests</a></li>
+                <li><a href="#">Chargesheet</a></li>
+                <li><a href="/case">Create new Case</a></li>
                 <li><a href="#">Settings</a></li>
                 <li><form action="/logout" method="post"><button style="border: none; background-color: inherit; color: white; font-size: 1rem;">Logout</button></form></li>
             </ul>
@@ -209,42 +226,59 @@
 
         <!-- Main Dashboard -->
         <div class="dashboard">
+            <!-- Button for Creating New Case -->
+            
+
             <div class="dashboard-header">
-                <h1><%= lawyer.name %>'s Dashboard</h1>
+                <h1><%= stenographer.name %>'s Dashboard</h1>
             </div>
 
-            <!-- Overview Cards -->
+            <!-- Stenographer Information -->
             <div class="card-container">
+            
                 <div class="card">
-                    <h3>Cases</h3>
-                    <p><%= lawyer.cases.length %></p>
+                    <h3>Role</h3>
+                    <p><%= stenographer.role %></p>
                 </div>
                 <div class="card">
-                    <h3>Specialty</h3>
-                    <p><%= lawyer.specialty.join(', ') %></p>
+                    <h3>Email</h3>
+                    <p><%= stenographer.contactDetails.email %></p>
                 </div>
                 <div class="card">
-                    <h3>Experience</h3>
-                    <p><%= lawyer.experience %> years</p>
+                    <h3>Contact</h3>
+                    <p><%= stenographer.contactDetails.phone %></p>
                 </div>
             </div>
 
-            <!-- Case List -->
+            <!-- Digital Signature -->
+            <div class="digital-signature">
+                <h3>Digital Signature</h3>
+                <% if (stenographer.digitalSignature.digitalSignatureURL) { %>
+                    <a href="<%= stenographer.digitalSignature.digitalSignatureURL %>" target="_blank">View Digital Signature</a>
+                <% } else { %>
+                    <p>No digital signature available.</p>
+                <% } %>
+            </div>
+
+            <!-- Assigned Cases -->
             <div class="case-list">
-                <h3>Ongoing Cases</h3>
-                <% if (lawyer.cases && lawyer.cases.length > 0) { %>
-                    <% lawyer.cases.forEach(caseItem => { %>
+                <h3>Assigned Cases</h3>
+                <% if (stenographer.assignedCases && stenographer.assignedCases.length > 0) { %>
+                    <% stenographer.assignedCases.forEach(caseItem => { %>
                         <div class="case-item">
-                            <p><strong>Title:</strong> <%= caseItem.caseTitle %></p>
-                            <p><strong>Type:</strong> <%= caseItem.caseType %></p>
+                            <p><strong>Case ID:</strong> <%= caseItem._id %></p>
+                            <p><strong>Title:</strong> <%= caseItem.title %></p>
+                            <p><strong>Description:</strong> <%= caseItem.description %></p>
                             <p><strong>Status:</strong> <%= caseItem.status %></p>
-                            <p><strong>Court:</strong> <%= caseItem.court.courtName %></p>
                             <a href="/cases/<%= caseItem._id %>">View Details</a>
                         </div>
                     <% }); %>
                 <% } else { %>
-                    <p>No ongoing cases available.</p>
+                    <p>No cases assigned.</p>
                 <% } %>
+            </div>
+            <div class="create-case-button">
+                <a href="/case">Create New Case</a>
             </div>
         </div>
     </div>

@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Convict Profile Dashboard</title>
+    <link rel="stylesheet" href="/path/to/your/styles.css">
+    <style>
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: #ffffff;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .sidebar {
+            width: 260px;
+            background-color: #020f1d;
+            box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar h2 {
+            font-size: 1.8em;
+            color: #fff;
+            margin-bottom: 30px;
+            text-align: center;
+            font-weight: 700;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            margin-bottom: 15px;
+            transition: transform 0.2s;
+        }
+
+        .sidebar ul li:hover {
+            transform: scale(1.05);
+        }
+
+        .sidebar ul li a {
+            text-decoration: none;
+            font-size: 1.2em;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            transition: color 0.3s ease;
+        }
+
+        .sidebar ul li a:hover {
+            color: #ffd700;
+        }
+
+        .dashboard {
+            flex-grow: 1;
+            padding: 40px;
+            background-color: #f0f4f8;
+            overflow-y: auto;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            animation: fadeIn 1s ease;
+        }
+
+        .dashboard-header h1 {
+            font-size: 2.5em;
+            color: #333;
+            font-weight: 700;
+            margin: 0;
+            padding: 10px;
+            display: inline-block; /* Adjust the width of the border to the content */
+        }
+
+        .card-container {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+            animation: fadeInUp 0.7s ease forwards;
+        }
+
+        .card {
+            flex: 1;
+            background: linear-gradient(135deg, #e0f7fa, #b9e0ff);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s ease, border 0.3s;
+            border: 1px solid #000;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 16px 32px rgba(0, 0, 0, 0.2);
+            border: 1px solid #007bff;
+        }
+
+        .card h3 {
+            font-size: 1.4em;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .card p {
+            font-size: 1.4em;
+            color: #085588;
+            font-weight: 700;
+        }
+
+        .case-list {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            animation: fadeInUp 0.7s ease forwards;
+        }
+
+        .case-list h3 {
+            font-size: 2em;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .case-item {
+            padding: 20px;
+            margin-bottom: 20px;
+            background-color: #f9f9f9;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.3s, transform 0.3s;
+        }
+
+        .case-item:hover {
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+            transform: translateY(-5px);
+        }
+
+        .case-item p {
+            margin: 10px 0;
+            font-size: 1.1em;
+            color: #333;
+        }
+
+        .case-item a {
+            text-decoration: none;
+            color: #007bff;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        .case-item a:hover {
+            color: #ffd700;
+            text-decoration: underline;
+        }
+
+        .chargesheet-details {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            animation: fadeInUp 0.7s ease forwards;
+        }
+
+        .chargesheet-details h3 {
+            font-size: 2em;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .chargesheet-details .card-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .chargesheet-details .card {
+            background: linear-gradient(135deg, #e0f7fa, #b9e0ff);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border: 1px solid #000;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <h2 style="text-align: start;">Convict Dashboard</h2>
+            <ul>
+                <li><a href="#"></a></li>
+                <li><a href="#">Profile</a></li>
+                <li><a href="#">Cases</a></li>
+                <li><a href="#">Chargesheet</a></li>
+                <li><a href="#">Hire a Lawyer</a></li>
+                <li><a href="#">Get Recommended Lawyer</a></li>
+                
+                <li><a href="http://192.168.71.240:8501/">Lawerence</a></li>
+                <li><form action="/logout" method="post"><button style="border: none; background-color: inherit; color: white; font-size: 1rem;">Logout</button></form></li>
+            </ul>
+        </div>
+
+        <!-- Main Dashboard -->
+        <div class="dashboard">
+            <div class="dashboard-header" >
+                <h1><%= convict.name %>'s Dashboard</h1>
+            </div>
+
+            <!-- Convict Information -->
+            <div class="card-container">
+                <div class="card">
+                    <h3>Username</h3>
+                    <p><%= convict.username %></p>
+                </div>
+                <div class="card">
+                    <h3>Role</h3>
+                    <p><%= convict.role %></p>
+                </div>
+                <div class="card">
+                    <h3>Email</h3>
+                    <p><%= convict.email %></p>
+                </div>
+                <div class="card">
+                    <h3>Contact</h3>
+                    <p><%= convict.contactDetails.phone %></p>
+                    <p><%= convict.contactDetails.address %></p>
+                </div>
+            </div>
+
+            <!-- Cases -->
+            <div class="case-list">
+                <h3>Assigned Cases</h3>
+                <% if (convict.cases && convict.cases.length > 0) { %>
+                    <% convict.cases.forEach(caseItem => { %>
+                        <div class="case-item">
+                            <p><strong>Case ID:</strong> <%= caseItem._id %></p>
+                            <p><strong>Title:</strong> <%= caseItem.caseTitle %></p>
+                            <p><strong>Type:</strong> <%= caseItem.caseType %></p>
+                            <p><strong>Status:</strong> <%= caseItem.status %></p>
+                            <p><strong>Court:</strong> <%= caseItem.court.courtName %></p>
+                            <p><strong>Description:</strong> <%= caseItem.description %></p>
+                            <a href="/cases/<%= caseItem._id %>">View Details</a>
+                        </div>
+                    <% }); %>
+                <% } else { %>
+                    <p>No cases assigned.</p>
+                <% } %>
+            </div>
+
+            <!-- Chargesheet Details -->
+            <div class="chargesheet-details">
+                <h3>Chargesheet Details</h3>
+                <% if (convict.chargeSheet) { %>
+                    <div class="card-container">
+                        <div class="card">
+                            <h3>Charges</h3>
+                            <p><%= convict.chargeSheet.charges %></p>
+                        </div>
+                        <div class="card">
+                            <h3>Evidence</h3>
+                            <% if (convict.chargeSheet.evidence && convict.chargeSheet.evidence.length > 0) { %>
+                                <% convict.chargeSheet.evidence.forEach(evidence => { %>
+                                    <div>
+                                        <p><strong>Description:</strong> <%= evidence.description %></p>
+                                        <p><a href="<%= evidence.documentURL %>" target="_blank">View Document</a></p>
+                                    </div>
+                                <% }); %>
+                            <% } else { %>
+                                <p>No evidence provided.</p>
+                            <% } %>
+                        </div>
+                        <div class="card">
+                            <h3>Witnesses</h3>
+                            <% if (convict.chargeSheet.witnesses && convict.chargeSheet.witnesses.length > 0) { %>
+                                <% convict.chargeSheet.witnesses.forEach(witness => { %>
+                                    <div>
+                                        <p><strong>Name:</strong> <%= witness.name %></p>
+                                        <p><strong>Phone:</strong> <%= witness.contactDetails.phone %></p>
+                                        <p><strong>Email:</strong> <%= witness.contactDetails.email %></p>
+                                        <p><strong>Testimony:</strong> <%= witness.testimony %></p>
+                                    </div>
+                                <% }); %>
+                            <% } else { %>
+                                <p>No witnesses listed.</p>
+                            <% } %>
+                        </div>
+                        <div class="card">
+                            <h3>Prosecutor</h3>
+                            <% if (convict.chargeSheet.prosecutor) { %>
+                                <p><strong>Name:</strong> <%= convict.chargeSheet.prosecutor.name %></p>
+                                <p><strong>Phone:</strong> <%= convict.chargeSheet.prosecutor.contactDetails.phone %></p>
+                                <p><strong>Email:</strong> <%= convict.chargeSheet.prosecutor.contactDetails.email %></p>
+                            <% } else { %>
+                                <p>No prosecutor assigned.</p>
+                            <% } %>
+                        </div>
+                        <div class="card">
+                            <h3>Filed Date</h3>
+                            <p><%= convict.chargeSheet.dateFiled.toDateString() %></p>
+                        </div>
+                        <div class="card">
+                            <h3>Police Station</h3>
+                            <p><%= convict.chargeSheet.policeStation %></p>
+                        </div>
+                        <div class="card">
+                            <h3>Status</h3>
+                            <p><%= convict.chargeSheet.status %></p>
+                        </div>
+                    </div>
+                <% } else { %>
+                    <p>No chargesheet available.</p>
+                <% } %>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

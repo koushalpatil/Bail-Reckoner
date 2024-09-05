@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lawyer Profile Dashboard</title>
+    <title>Judge Profile Dashboard</title>
     <link rel="stylesheet" href="/path/to/your/styles.css">
     <style>
         /* Importing Google Font */
@@ -27,8 +27,8 @@
         /* Sidebar Styles */
         .sidebar {
             width: 250px;
-            background-color: #022c58;
-            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            background-color: #003366;
+            border-right: 3px solid black;
             padding: 20px;
             transition: all 0.3s ease;
         }
@@ -72,7 +72,7 @@
         .dashboard {
             flex-grow: 1;
             padding: 40px;
-            background-color: #f0f4f8;
+           
             overflow-y: auto;
         }
 
@@ -81,7 +81,6 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 30px;
-            animation: fadeIn 1s ease;
         }
 
         .dashboard-header h1 {
@@ -96,17 +95,17 @@
             display: flex;
             gap: 30px;
             margin-bottom: 30px;
-            animation: fadeInUp 0.7s ease forwards;
         }
 
         .card {
             flex: 1;
-            background-color: #fff;
+            background-color: #f0f9ff;
             padding: 30px;
             border-radius: 12px;
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
             text-align: center;
             transition: transform 0.3s, box-shadow 0.3s ease;
+            border: 3px solid black;
         }
 
         .card:hover {
@@ -123,17 +122,17 @@
 
         .card p {
             font-size: 1.8em;
-            color: #007bff;
+            color: #003366;
             font-weight: 700;
         }
 
         /* Case List Styles */
         .case-list {
-            background-color: #fff;
+            background-color: #f0f9ff;
             padding: 30px;
             border-radius: 12px;
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-            animation: fadeInUp 0.7s ease forwards;
+            border: 3px solid black;
         }
 
         .case-list h3 {
@@ -164,7 +163,7 @@
 
         .case-item a {
             text-decoration: none;
-            color: #007bff;
+            color: #003366;
             font-weight: bold;
             transition: color 0.3s;
         }
@@ -173,35 +172,17 @@
             color: #ffd700;
             text-decoration: underline;
         }
-
-        /* Animations */
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
     </style>
 </head>
 <body>
     <div class="container">
         <!-- Sidebar -->
         <div class="sidebar">
-            <h2 style="text-align: start;">Lawyer Dashboard</h2>
+            <h2>Judge Dashboard</h2>
             <ul>
-                
                 <li><a href="#">Profile</a></li>
                 <li><a href="#">Cases</a></li>
-                <li><a href="#">Requests</a></li>
+                <li><a href="#">View Documents</a></li>
                 <li><a href="#">Settings</a></li>
                 <li><form action="/logout" method="post"><button style="border: none; background-color: inherit; color: white; font-size: 1rem;">Logout</button></form></li>
             </ul>
@@ -210,30 +191,29 @@
         <!-- Main Dashboard -->
         <div class="dashboard">
             <div class="dashboard-header">
-                <h1><%= lawyer.name %>'s Dashboard</h1>
+                <h1><%= judge.name %>'s Dashboard</h1>
             </div>
 
             <!-- Overview Cards -->
             <div class="card-container">
                 <div class="card">
-                    <h3>Cases</h3>
-                    <p><%= lawyer.cases.length %></p>
+                    <h3>Role</h3>
+                    <p><%= judge.role %></p>
                 </div>
                 <div class="card">
-                    <h3>Specialty</h3>
-                    <p><%= lawyer.specialty.join(', ') %></p>
+                    <h3>Position</h3>
+                    <p><%= judge.position %></p>
                 </div>
                 <div class="card">
-                    <h3>Experience</h3>
-                    <p><%= lawyer.experience %> years</p>
+                    <h3>Contact Email</h3>
+                    <p><%= judge.contactDetails.email %></p>
                 </div>
             </div>
 
-            <!-- Case List -->
             <div class="case-list">
                 <h3>Ongoing Cases</h3>
-                <% if (lawyer.cases && lawyer.cases.length > 0) { %>
-                    <% lawyer.cases.forEach(caseItem => { %>
+                <% if (judge.cases && judge.cases.length > 0) { %>
+                    <% judge.cases.forEach(caseItem => { %>
                         <div class="case-item">
                             <p><strong>Title:</strong> <%= caseItem.caseTitle %></p>
                             <p><strong>Type:</strong> <%= caseItem.caseType %></p>
@@ -245,6 +225,13 @@
                 <% } else { %>
                     <p>No ongoing cases available.</p>
                 <% } %>
+            </div>
+
+            <!-- Digital Signature -->
+            <div class="case-list">
+                <h3>Digital Signature</h3>
+                <p><strong>Digital Signature URL:</strong> <a href="<%= judge.digitalSignature.digitalSignatureURL %>">View Signature</a></p>
+                <p><strong>Digital Signature Hash:</strong> <%= judge.digitalSignature.digitalSignatureHash %></p>
             </div>
         </div>
     </div>

@@ -11,6 +11,7 @@ const Case = require('../models/case');
 const lawyer = require('../models/lawyer');
 
 
+
 //Handle this for case submit
 // Function to handle case submission
 module.exports.handleCaseSubmit = async (req, res) => {
@@ -34,7 +35,7 @@ module.exports.handleCaseSubmit = async (req, res) => {
             judgementJudge,
             caseProceedings,
             signed,
-            stenographer,
+          
             natureOfOffense,
             chargesPressed,
             dateOfArrest,
@@ -44,38 +45,32 @@ module.exports.handleCaseSubmit = async (req, res) => {
             documents
         } = req.body;
 
+       
 
-        
-        console.log("Judge - ",judge);
-        console.log("l1 - ",lawyer1);
-        console.log("l2 - ",lawyer2);
-        console.log("User - ",accussed);
-
-        // Lookup accused and lawyers by username
-        const [accusedUser, lawyer1User, lawyer2User,judgeUser,steagnographerUser] = await Promise.all([
+        // Lookup accused, lawyers, judge, and stenographer by username
+        const [accusedUser, lawyer1User, lawyer2User, judgeUser] = await Promise.all([
             Convict.findOne({ username: accussed }),
             Lawyer.findOne({ username: lawyer1 }),
             Lawyer.findOne({ username: lawyer2 }),
-            Judge.findOne({username:judge}),
-            Steagnographer.findOne({username:stenographer})
+            Judge.findOne({ username: judge }),
+           
         ]);
-         
-        let judgementPassed = {
-            date:judgementDate,
-            judge:judgeUser._id,
-            judgement:judgementTold
-        }
 
-        console.log("judge id - ",judgeUser._id);
-        console.log("l1 id - ",judgeUser._id);
-        console.log("l2 id - ",judgeUser._id);
-        console.log("convic id - ",judgeUser._id);
-        console.log("staegnopher id - ",judgeUser._id);
-             
-        // If any of the required users are not found, return an error
-        if (!accusedUser || !lawyer1User || !lawyer2User) {
+        
+        
+        
+
+        // Check if all required users are found
+        if (!accusedUser || !lawyer1User || !lawyer2User || !judgeUser) {
             return res.redirect("/signup");
         }
+
+        console.log("user is - ",req.user._id);
+        
+
+        let stenographerUser = await Steagnographer.findById(req.user._id);
+        console.log("Steagnographer is - ",stenographerUser);
+        
 
         // Create a new Case document
         const newCase = new Case({
@@ -87,15 +82,19 @@ module.exports.handleCaseSubmit = async (req, res) => {
             court,
             status,
             courtDates,
-            judge:judgeUser._id,
+            judge: judgeUser._id,
             accussed: accusedUser._id,
             defendant,
             lawyer1: lawyer1User._id,
             lawyer2: lawyer2User._id,
-            judgementPassed,
+            judgementPassed: {
+                date: judgementDate,
+                judge: judgeUser._id,
+                judgement: judgementTold
+            },
             caseProceedings,
             signed,
-            stenographer:steagnographerUser._id,
+            stenographer: stenographerUser._id,
             natureOfOffense,
             chargesPressed,
             dateOfArrest,
@@ -104,31 +103,23 @@ module.exports.handleCaseSubmit = async (req, res) => {
             convictionStatus,
             documents
         });
-           
-
-        console.log("judge id - ",judgeUser._id);
-        console.log("l1 id - ",judgeUser._id);
-        console.log("l2 id - ",judgeUser._id);
-        console.log("convic id - ",judgeUser._id);
-        console.log("staegnopher id - ",judgeUser._id);
-       
-        
-       
-        
-        
 
         // Save the case to the database
         const savedCase = await newCase.save();
 
-        // Optionally update related entities (Judge, Accused, Defendant, Lawyer)
+        // Update related entities
         await Promise.all([
+            // Update stenographer's assigned cases
+            Steagnographer.findByIdAndUpdate(stenographerUser._id, { $addToSet: { assignedCases: savedCase._id } }),
+
+            // Update other related entities
             Judge.findByIdAndUpdate(judgeUser._id, { $addToSet: { cases: savedCase._id } }),
             Convict.findByIdAndUpdate(accusedUser._id, { $addToSet: { cases: savedCase._id } }),
             Lawyer.findByIdAndUpdate(lawyer1User._id, { $addToSet: { cases: savedCase._id } }),
             Lawyer.findByIdAndUpdate(lawyer2User._id, { $addToSet: { cases: savedCase._id } })
         ]);
 
-        // Respond with the saved case
+        // Respond with a redirect or success message
         res.redirect("/");
     } catch (error) {
         console.error('Error handling case submission:', error);
@@ -248,22 +239,26 @@ module.exports.login = async(req,res)=>{
     else
     if(req.user.role == 'Judge')
     {
-        res.redirect("/");
+        let judge = await Judge.findById(req.user._id).populate('cases');
+        return res.render("users/judgeProfile.ejs",{judge});
     }
     else
     if(req.user.role == 'Convict')
     {
-        res.redirect("/");
+        let convict = await Convict.findById(req.user._id).populate('cases').populate('chargeSheet');
+        return res.render("users/convictProfile.ejs",{convict});
     }
     else
     if(req.user.role == 'Steagnographer')
     {
-        res.redirect("/");
+        let stenographer = await Steagnographer.findById(req.user._id).populate('assignedCases');
+        return res.render("users/steagnographerProfile.ejs",{stenographer});
     }
     else
     if(req.user.role == 'Prosecutor')
     {
-        res.redirect("/");
+        let prosecutor = await Prosecutor.findById(req.user._id);
+        return res.render("users/prosecutorProfile.ejs",{prosecutor});
     }
 }
 

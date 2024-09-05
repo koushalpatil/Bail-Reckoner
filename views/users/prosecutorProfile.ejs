@@ -3,13 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lawyer Profile Dashboard</title>
+    <title>Prosecutor Profile Dashboard</title>
     <link rel="stylesheet" href="/path/to/your/styles.css">
     <style>
-        /* Importing Google Font */
-        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap');
-
-        /* General Styles */
         body {
             font-family: 'Nunito', sans-serif;
             background-color: #f0f4f8;
@@ -24,10 +20,9 @@
             height: 100vh;
         }
 
-        /* Sidebar Styles */
         .sidebar {
             width: 250px;
-            background-color: #022c58;
+            background-color: #007bff;
             box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
             padding: 20px;
             transition: all 0.3s ease;
@@ -68,7 +63,6 @@
             color: #ffd700;
         }
 
-        /* Dashboard Styles */
         .dashboard {
             flex-grow: 1;
             padding: 40px;
@@ -77,9 +71,6 @@
         }
 
         .dashboard-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
             margin-bottom: 30px;
             animation: fadeIn 1s ease;
         }
@@ -91,20 +82,17 @@
             margin: 0;
         }
 
-        /* Card Styles */
         .card-container {
-            display: flex;
-            gap: 30px;
-            margin-bottom: 30px;
-            animation: fadeInUp 0.7s ease forwards;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
         }
 
         .card {
-            flex: 1;
             background-color: #fff;
             padding: 30px;
             border-radius: 12px;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
             text-align: center;
             transition: transform 0.3s, box-shadow 0.3s ease;
         }
@@ -127,51 +115,42 @@
             font-weight: 700;
         }
 
-        /* Case List Styles */
-        .case-list {
+        /* Chargesheet Button */
+        .create-chargesheet-button {
             background-color: #fff;
             padding: 30px;
             border-radius: 12px;
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s ease;
             animation: fadeInUp 0.7s ease forwards;
+            margin-top: 30px;
         }
 
-        .case-list h3 {
+        .create-chargesheet-button:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 16px 32px rgba(0, 0, 0, 0.2);
+        }
+
+        .create-chargesheet-button h3 {
             font-size: 2em;
             font-weight: 700;
             margin-bottom: 20px;
             color: #333;
         }
 
-        .case-item {
-            padding: 20px;
-            margin-bottom: 15px;
-            background-color: #f9f9f9;
-            border-radius: 10px;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-            transition: box-shadow 0.3s, transform 0.3s;
-        }
-
-        .case-item:hover {
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            transform: translateY(-5px);
-        }
-
-        .case-item p {
-            margin: 10px 0;
-            font-size: 1.1em;
-        }
-
-        .case-item a {
+        .create-chargesheet-button a {
+            padding: 10px 20px;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: #fff;
+            font-size: 1.2em;
             text-decoration: none;
-            color: #007bff;
-            font-weight: bold;
-            transition: color 0.3s;
+            transition: background-color 0.3s;
         }
 
-        .case-item a:hover {
-            color: #ffd700;
-            text-decoration: underline;
+        .create-chargesheet-button a:hover {
+            background-color: #0056b3;
         }
 
         /* Animations */
@@ -196,55 +175,55 @@
     <div class="container">
         <!-- Sidebar -->
         <div class="sidebar">
-            <h2 style="text-align: start;">Lawyer Dashboard</h2>
+            <h2>Prosecutor Dashboard</h2>
             <ul>
-                
+                <li><a href="#">Dashboard</a></li>
                 <li><a href="#">Profile</a></li>
                 <li><a href="#">Cases</a></li>
-                <li><a href="#">Requests</a></li>
+                <li><a href="#">Chargesheet</a></li>
                 <li><a href="#">Settings</a></li>
-                <li><form action="/logout" method="post"><button style="border: none; background-color: inherit; color: white; font-size: 1rem;">Logout</button></form></li>
             </ul>
         </div>
 
         <!-- Main Dashboard -->
         <div class="dashboard">
+            <!-- Prosecutor Information -->
             <div class="dashboard-header">
-                <h1><%= lawyer.name %>'s Dashboard</h1>
+                <h1><%= prosecutor.name %>'s Dashboard</h1>
             </div>
-
-            <!-- Overview Cards -->
+            
+            <!-- Cards Display -->
             <div class="card-container">
                 <div class="card">
-                    <h3>Cases</h3>
-                    <p><%= lawyer.cases.length %></p>
+                    <h3>Username</h3>
+                    <p><%= prosecutor.username %></p>
                 </div>
                 <div class="card">
-                    <h3>Specialty</h3>
-                    <p><%= lawyer.specialty.join(', ') %></p>
+                    <h3>Role</h3>
+                    <p><%= prosecutor.role %></p>
                 </div>
                 <div class="card">
-                    <h3>Experience</h3>
-                    <p><%= lawyer.experience %> years</p>
+                    <h3>Email</h3>
+                    <p><%= prosecutor.contactDetails.email %></p>
+                </div>
+                <div class="card">
+                    <h3>Contact</h3>
+                    <p><%= prosecutor.contactDetails.phone %></p>
+                </div>
+                <div class="card">
+                    <h3>Police Station</h3>
+                    <p><%= prosecutor.policeStation %></p>
+                </div>
+                <div class="card">
+                    <h3>Police ID</h3>
+                    <p><%= prosecutor.policeId %></p>
                 </div>
             </div>
-
-            <!-- Case List -->
-            <div class="case-list">
-                <h3>Ongoing Cases</h3>
-                <% if (lawyer.cases && lawyer.cases.length > 0) { %>
-                    <% lawyer.cases.forEach(caseItem => { %>
-                        <div class="case-item">
-                            <p><strong>Title:</strong> <%= caseItem.caseTitle %></p>
-                            <p><strong>Type:</strong> <%= caseItem.caseType %></p>
-                            <p><strong>Status:</strong> <%= caseItem.status %></p>
-                            <p><strong>Court:</strong> <%= caseItem.court.courtName %></p>
-                            <a href="/cases/<%= caseItem._id %>">View Details</a>
-                        </div>
-                    <% }); %>
-                <% } else { %>
-                    <p>No ongoing cases available.</p>
-                <% } %>
+            
+            <!-- Button for Filing New Chargesheet -->
+            <div class="create-chargesheet-button">
+                <h3>File a Chargesheet</h3>
+                <a href="/chargesheet">File New Chargesheet</a>
             </div>
         </div>
     </div>

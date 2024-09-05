@@ -4,60 +4,127 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>All Cases</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         body {
-            background-color: #f8f9fa;
+            font-family: "Poppins", sans-serif;
+            background: linear-gradient(to right, #d4e1f1, #a8c0e8);
+            animation: backgroundChange 8s ease-in-out infinite;
+            overflow-x: auto; /* Enable horizontal scrolling if needed */
+            margin: 0;
+            padding: 0;
         }
+
+        @keyframes backgroundChange {
+            0% {
+                background: linear-gradient(to right, #d4e1f1, #a8c0e8);
+            }
+            25% {
+                background: linear-gradient(to right, #a8c0e8, #d4e1f1);
+            }
+            50% {
+                background: linear-gradient(to right, #d4e1f1, #a8c0e8);
+            }
+            75% {
+                background: linear-gradient(to right, #a8c0e8, #d4e1f1);
+            }
+            100% {
+                background: linear-gradient(to right, #d4e1f1, #a8c0e8);
+            }
+        }
+
         .container {
             max-width: 1200px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.85);
+            border-radius: 12px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
         }
+
+        .container::before {
+            content: "";
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            border: 2px solid #333;
+            border-radius: 12px;
+            pointer-events: none;
+            z-index: -1;
+        }
+
         h1 {
             font-size: 2.5rem;
-            color: #343a40;
-            margin-bottom: 30px;
+            color: #333;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            font-weight: bold;
+            border: 2px solid #333;
+            border-radius: 8px;
+            padding: 0.5rem 1rem;
+            background: rgba(255, 255, 255, 0.7);
         }
+
+        .table-responsive {
+            overflow-x: auto; /* Enable horizontal scrolling for the table */
+        }
+
         .table {
             background-color: #ffffff;
-            border-radius: 10px;
+            border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+            min-width: 800px; /* Adjust width as needed */
         }
+
         .table thead {
             background-color: #343a40;
             color: #ffffff;
         }
+
         .table th, .table td {
             padding: 16px;
             vertical-align: middle;
+            border: 2px solid #ddd;
+            transition: background-color 0.3s, box-shadow 0.3s; /* Smooth transitions */
         }
+
+        .table th:hover, .table td:hover {
+             /* Highlight background on cell hover */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Glow effect */
+        }
+
         .btn-view {
-            background-color: #17a2b8;
-            color: #ffffff;
+            display: inline-block;
             padding: 6px 12px;
-            border-radius: 5px;
+            background: linear-gradient(45deg, #d4e1f1, #a8c0e8);
+            border: 2px solid black;
+            color: black;
             text-decoration: none;
-            transition: background-color 0.3s;
+            border-radius: 4px;
+            transition: background 0.3s ease-in-out, color 0.3s ease-in-out;
         }
+
         .btn-view:hover {
-            background-color: #138496;
+            background: linear-gradient(45deg, #a8c0e8, #d4e1f1);
+            color: white;
         }
     </style>
 </head>
 <body>
-    <div class="container mt-5">
-        <h1 class="text-center">All Cases</h1>
+    <div class="container">
+        <h1>All Cases</h1>
         <div class="table-responsive">
             <table class="table table-bordered table-hover mt-4">
                 <thead>
                     <tr>
                         <th>Case Title</th>
                         <th>Case Type</th>
-                        <th>Filing Date</th>
                         <th>Status</th>
-                        <th>Court</th>
                         <th>Judge</th>
-                        <th>Defendant</th>
                         <th>Lawyers</th>
                         <th>Nature of Offense</th>
                         <th>Date of Arrest</th>
@@ -71,14 +138,8 @@
                         <tr>
                             <td><%= caseItem.caseTitle %></td>
                             <td><%= caseItem.caseType %></td>
-                            <td><%= caseItem.filingDate.toDateString() %></td>
                             <td><%= caseItem.status %></td>
-                            <td>
-                                <strong>Name:</strong> <%= caseItem.court.courtName %><br>
-                                <strong>Address:</strong> <%= caseItem.court.courtAddress %>
-                            </td>
                             <td><%= caseItem.judge.name %></td>
-                            <td><%= caseItem.defendant %></td>
                             <td>
                                 <strong>Lawyer 1:</strong> <%= caseItem.lawyer1.map(lawyer => lawyer.name).join(', ') %><br>
                                 <strong>Lawyer 2:</strong> <%= caseItem.lawyer2.map(lawyer => lawyer.name).join(', ') %>

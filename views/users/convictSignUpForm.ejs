@@ -3,32 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Convict Form</title>
+    <title>Convict Sign Up</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-        }
-        .container {
-            background: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f4f8;
+            color: #333;
             padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            margin-top: 50px;
         }
+
+        .container {
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 10px;
+            border: 2px solid #007bff;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            max-width: 600px;
+            margin: auto;
+        }
+
+        h2 {
+            margin-bottom: 30px;
+            font-size: 1.75rem;
+            font-weight: 600;
+            color: #007bff;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-control {
+            border-radius: 5px;
+            padding: 15px;
+            border: 1px solid #ced4da;
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .form-control:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.25);
+        }
+
         .btn-primary {
             background-color: #007bff;
             border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: background-color 0.3s, box-shadow 0.3s;
         }
+
         .btn-primary:hover {
             background-color: #0056b3;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .invalid-feedback {
+            display: block;
+            color: #dc3545;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h2 class="mb-4">Convict Details</h2>
+        <h2 class="mb-4">Convict Sign Up</h2>
         <form id="convictForm" action="/submit-convict" method="POST">
             <div class="form-group">
                 <label for="name">Name</label>
@@ -37,6 +81,7 @@
                     Name is required.
                 </div>
             </div>
+
             <div class="form-group">
                 <label for="phone">Phone</label>
                 <input type="text" class="form-control" id="phone" name="phone" required pattern="\d{10}" title="Phone number should be exactly 10 digits">
@@ -87,7 +132,7 @@
 
             <div class="form-group">
                 <label for="parentsPhone">Parents' Phone Number</label>
-                <input type="text" class="form-control" id="parentsPhone" name="parentsPhoneno" required pattern="\d{10}" title="Phone number should be exactly 10 digits">
+                <input type="text" class="form-control" id="parentsPhone" name="parentsPhone" required pattern="\d{10}" title="Phone number should be exactly 10 digits">
                 <div class="invalid-feedback">
                     Please enter a valid phone number (10 digits).
                 </div>
@@ -103,10 +148,8 @@
 
             <div class="form-group">
                 <label for="highlights">Family Background Highlights</label>
-                <textarea class="form-control" id="highlights" name="parentsHighlights"></textarea>
+                <textarea class="form-control" id="highlights" name="highlights"></textarea>
             </div>
-
-            
 
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>

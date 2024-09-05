@@ -52,7 +52,7 @@ const CaseSchema = new mongoose.Schema({
         address:
         {
           type:String,
-          required:true
+         
         },
         testimony:[{
           type:String
